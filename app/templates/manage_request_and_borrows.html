@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MANAGE REQUESTS AND BORROWED BOOKS</title>
+
+    
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    
+    
+  </head>
+  <body>
+
+<div class="container py-5 mb5">
+  <h1 class="mb-5">Library Management System</h1>
+
+  <div class="row">
+    <div class="col-md-3">
+        <form class="mb-3">
+          <div class="input-group">
+            <div class="input-group-append">
+              <h3>Manage Request and Borrowed Books</h3>
+            </div>
+          </div>
+        </form>
+
+        <div class="list-group">
+          <a href="{{ url_for('manage_book') }}" class="list-group-item list-group-item-action"> Manage Books </a>
+          <a href="{{ url_for('rb_dashboard') }}" class="list-group-item list-group-item-action active">Manage Request and Borrowed Books <span style="color: red;">•</span></a>
+          <a href="{{ url_for('manage_users') }}" class="list-group-item list-group-item-action">Manage Users</a>
+          <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">Logout</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+
+      <div class="row d-none">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Card title</h4>
+              <p class="card-text">
+                Some quick example text to build on the card title
+                and make up the bulk of the card's content.
+              </p>
+              <!--<a href="#!" class="btn btn-primary">Go somewhere</a>-->
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      <form class="form-floating">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <label style="color:green">{{ message }}</label>
+            {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+      </form>
+
+
+ <br/>
+
+ <h2>Borrowed Books</h2>
+  <table class="table my-3">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Borrower ID</th>
+      <th scope="col">Book Name</th>
+      <th scope="col">Date Borrowed</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for borrow in borrows %}
+    <tr>
+      <td>
+        {{ borrow.user_id}}
+      </td>
+      <td>
+        {{ borrow.book_name}}
+      </td>
+      <td>
+        {{ borrow.date}}
+      </td>
+      <td>
+        <a href="{{ url_for('delete_borrowed', id=borrow.id) }}" class="btn btn-sm btn-primary my-1 my-sm-2">
+          <span class="fas fa-edit mr-1"></span>
+          Mark as Returned</a>
+      </td>
+    </tr>
+  </tbody>
+
+  {% endfor %}
+</table>
+ <h2>Approved Request</h2>
+  <table class="table my-3">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Requested Book</th>
+      <th scope="col">User ID</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for request in requests %}
+    {% if request.status == "Approved"%}
+    <tr>
+      <td>
+        {{ request.book_name}}
+      </td>
+      <td>
+        {{ request.user_id}}
+      </td>
+      <td>
+        {{ request.status}}
+      </td>
+      <td>
+        <a href="{{ url_for('borrow', id=request.id) }}" class="btn btn-sm btn-primary my-1 my-sm-2">
+          <span class="fas fa-edit mr-1"></span>
+          Activate Request</a>
+          <a href="{{ url_for('delete_request', id=request.id) }}" class="btn btn-sm btn-primary my-1 my-sm-2">
+            <span class="fas fa-edit mr-1"></span>
+            Delete Request</a>
+      </td>
+    </tr>
+  {% endif %}
+  </tbody>
+
+  {% endfor %}
+</table>
+
+<h2>Pending Request</h2>
+<table class="table my-3">
+<thead class="thead-light">
+  <tr>
+    <th scope="col">Requested Book</th>
+    <th scope="col">User ID</th>
+    <th scope="col">Status</th>
+    <th scope="col">Actions</th>
+  </tr>
+</thead>
+<tbody>
+  {% for request in requests %}
+  {% if request.status == "Pending"%}
+  <tr>
+    <td>
+      {{ request.book_name}}
+    </td>
+    <td>
+      {{ request.user_id}}
+    </td>
+    <td>
+      {{ request.status}}
+    </td>
+    <td>
+      <a href="{{ url_for('approve_request', id= request.id) }}" class="btn btn-sm btn-primary my-1 my-sm-2">
+        <span class="fas fa-edit mr-1"></span>
+        Approve Request</a>
+        <a href="{{ url_for('delete_request', id= request.id) }}" class="btn btn-sm btn-primary my-1 my-sm-2">
+          <span class="fas fa-edit mr-1"></span>
+          Reject Request</a>
+    </td>
+  </tr>
+{% endif %}
+</tbody>
+
+{% endfor %}
+</table>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  </body>
+</html>
+

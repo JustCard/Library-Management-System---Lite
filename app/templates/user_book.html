@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Manage Books</title>
+
+    
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    
+    
+  </head>
+  <body>
+
+<div class="container py-5 mb5">
+  <h1 class="mb-5">Library Management System</h1>
+
+  <div class="row">
+    <div class="col-md-3">
+        <form class="mb-3">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search Books">
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active"> Manage Books </a>
+          <a href="#" class="list-group-item list-group-item-action">Manage Requests</a>
+          <a href="#" class="list-group-item list-group-item-action">Manage Borrowed Books</a>
+          <a href="#" class="list-group-item list-group-item-action">Manage Users</a>
+          <a href="#" class="list-group-item list-group-item-action">Logout</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+
+      <div class="row d-none">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Card title</h4>
+              <p class="card-text">
+                Some quick example text to build on the card title
+                and make up the bulk of the card's content.
+              </p>
+              <!--<a href="#!" class="btn btn-primary">Go somewhere</a>-->
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      <form class="form-floating">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <label style="color:green">{{ message }}</label>
+            {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+      </form>
+
+
+      <a href="{{ url_for('add_book') }}" class="btn btn-sm btn-success my-12 my-sm-0 float-right ">
+        [+] Add Book
+      </a>
+
+
+ <br/>
+  <table class="table my-3">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col">Books</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books_ordered %}
+    {% if book.qty > 1 %}
+    <tr>
+      <td>
+        {{ book.img }}
+      </td>
+      <td>
+        {{ book.title }} <br/>
+        {{ book.author }}
+        <p style="color: blue;"> Available </p>
+      </td>
+      <td>
+        <a href="{{ url_for('edit_book', id= book.id) }}" class="btn btn-sm btn-primary my-1 my-sm-0">
+          <span class="fas fa-edit mr-1"></span>
+          Edit Book</a>
+
+      </td>
+    </tr>
+
+  </tbody>
+  {% endif %}
+  {% endfor %}
+</table>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  </body>
+</html>
